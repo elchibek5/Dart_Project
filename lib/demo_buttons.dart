@@ -4,17 +4,20 @@ class DemoButtons extends StatefulWidget {
   const DemoButtons({super.key});
 
   @override
-  State<DemoButtons> createState() {
-    return _DemoButtonsState();
-  }
+  State<DemoButtons> createState() => _DemoButtonsState();
 }
 
 class _DemoButtonsState extends State<DemoButtons> {
-  var _isUnderstood = false;
+  bool _isUnderstood = false;
+
+  void _updateUnderstanding(bool value) {
+    setState(() => _isUnderstood = value);
+  }
 
   @override
   Widget build(BuildContext context) {
     print('DemoButtons BUILD called');
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -22,24 +25,20 @@ class _DemoButtonsState extends State<DemoButtons> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-              onPressed: () {
-                setState(() {
-                  _isUnderstood = false;
-                });
-              },
+              onPressed: () => _updateUnderstanding(false),
               child: const Text('No'),
             ),
             TextButton(
-              onPressed: () {
-                setState(() {
-                  _isUnderstood = true;
-                });
-              },
+              onPressed: () => _updateUnderstanding(true),
               child: const Text('Yes'),
             ),
           ],
         ),
-        if (_isUnderstood) const Text('Awesome!'),
+        if (_isUnderstood)
+          const Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Text('Awesome!'),
+          ),
       ],
     );
   }
