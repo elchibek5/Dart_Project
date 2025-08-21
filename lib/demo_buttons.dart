@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum Understanding { yes, no, none }
+
 class DemoButtons extends StatefulWidget {
   const DemoButtons({super.key});
 
@@ -8,10 +10,10 @@ class DemoButtons extends StatefulWidget {
 }
 
 class _DemoButtonsState extends State<DemoButtons> {
-  bool _isUnderstood = false;
+  Understanding _understanding = Understanding.none;
 
-  void _updateUnderstanding(bool value) {
-    setState(() => _isUnderstood = value);
+  void _updateUnderstanding(Understanding value) {
+    setState(() => _understanding = value);
   }
 
   @override
@@ -24,22 +26,33 @@ class _DemoButtonsState extends State<DemoButtons> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              onPressed: () => _updateUnderstanding(false),
-              child: const Text('No'),
-            ),
-            TextButton(
-              onPressed: () => _updateUnderstanding(true),
-              child: const Text('Yes'),
-            ),
+            _buildButton('No', Understanding.no),
+            const SizedBox(width: 8),
+            _buildButton('Yes', Understanding.yes),
           ],
         ),
-        if (_isUnderstood)
+        if (_understanding == Understanding.yes)
           const Padding(
             padding: EdgeInsets.only(top: 8),
-            child: Text('Awesome!'),
+            child: Text(
+              'Awesome!',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
       ],
+    );
+  }
+
+  Widget _buildButton(String label, Understanding value) {
+    final bool isSelected = _understanding == value;
+
+    return TextButton(
+      onPressed: () => _updateUnderstanding(value),
+      style: TextButton.styleFrom(
+        foregroundColor: isSelected ? Colors.white : Colors.blue,
+        backgroundColor: isSelected ? Colors.blue : null,
+      ),
+      child: Text(label),
     );
   }
 }
